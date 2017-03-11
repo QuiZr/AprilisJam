@@ -5,6 +5,7 @@ using AprilisJam.Data;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using AprilisJam.Models;
+using AprilisJam.ViewModels;
 
 namespace AprilisJam.Controllers
 {
@@ -19,68 +20,83 @@ namespace AprilisJam.Controllers
             _appSettings = appSettings.Value;
         }
 
-        public async Task<IActionResult> Index(string pw)
+        public async Task<IActionResult> Index()
         {
-            if (pw == _appSettings.Password)
-            {
-                Response.Cookies.Append("pw", pw);
-                return View(await _context.RegistrationForms.ToListAsync());
-            }
             if (!IsAuthorized())
-                return RedirectToDefaultRoute();
-
+                return RedirectToLogin();
             return View(await _context.RegistrationForms.ToListAsync());
         }
 
+        [HttpGet]
+        public IActionResult Login()
+        {
+            if (IsAuthorized())
+                return RedirectToAction("Index");
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Login(Login login)
+        {
+            if (_appSettings.Password == login.Password)
+                Response.Cookies.Append("pw", login.Password);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("pw");
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
             if (!IsAuthorized())
-                return RedirectToDefaultRoute();
+                return RedirectToLogin();
 
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var userApplication = await _context.RegistrationForms
+            var userApplication = await _context
+                .RegistrationForms
                 .SingleOrDefaultAsync(m => m.ID == id);
+
             if (userApplication == null)
-            {
                 return NotFound();
-            }
 
             return View(userApplication);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (!IsAuthorized())
-                return RedirectToDefaultRoute();
+                return RedirectToLogin();
 
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var userApplication = await _context.RegistrationForms.SingleOrDefaultAsync(m => m.ID == id);
+            var userApplication = await _context
+                .RegistrationForms
+                .SingleOrDefaultAsync(m => m.ID == id);
+
             if (userApplication == null)
-            {
                 return NotFound();
-            }
             return View(userApplication);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID, Name,Surname,Email,Phone,City,School,AprilisQuestion,AdditionalNotes")] RegistrationForm userApplication)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Surname,Email,Phone,City,School,AprilisQuestion,AdditionalNotes")] RegistrationForm userApplication)
         {
             if (!IsAuthorized())
-                return RedirectToDefaultRoute();
+                return RedirectToLogin();
 
             if (id != userApplication.ID)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -105,22 +121,21 @@ namespace AprilisJam.Controllers
             return View(userApplication);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (!IsAuthorized())
-                return RedirectToDefaultRoute();
+                return RedirectToLogin();
 
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var userApplication = await _context.RegistrationForms
+            var userApplication = await _context
+                .RegistrationForms
                 .SingleOrDefaultAsync(m => m.ID == id);
+
             if (userApplication == null)
-            {
                 return NotFound();
-            }
 
             return View(userApplication);
         }
@@ -130,33 +145,33 @@ namespace AprilisJam.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (!IsAuthorized())
-                return RedirectToDefaultRoute();
+                return RedirectToLogin();
 
-            var userApplication = await _context.RegistrationForms.SingleOrDefaultAsync(m => m.ID == id);
+            var userApplication = await _context
+                .RegistrationForms
+                .SingleOrDefaultAsync(m => m.ID == id);
+
             _context.RegistrationForms.Remove(userApplication);
             await _context.SaveChangesAsync();
+
             return RedirectToAction("Index");
         }
 
         private bool UserApplicationExists(int id)
         {
-            return _context.RegistrationForms.Any(e => e.ID == id);
+            return _context
+                .RegistrationForms
+                .Any(e => e.ID == id);
         }
 
         private bool IsAuthorized()
         {
-            if (Request.Cookies["pw"] == _appSettings.Password)
-                return true;
-            return false;
+            return (Request.Cookies["pw"] == _appSettings.Password);
         }
 
-        private RedirectToRouteResult RedirectToDefaultRoute()
+        private RedirectToActionResult RedirectToLogin()
         {
-            return RedirectToRoute(new
-            {
-                controller = "Registration",
-                action = "Index",
-            });
+            return RedirectToAction("Login");
         }
     }
 }
