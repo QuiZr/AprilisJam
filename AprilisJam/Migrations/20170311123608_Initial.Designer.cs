@@ -7,8 +7,8 @@ using AprilisJam.Data;
 
 namespace AprilisJam.Migrations
 {
-    [DbContext(typeof(GameJamContext))]
-    [Migration("20170310164617_Initial")]
+    [DbContext(typeof(AprilisJamRegistrationContext))]
+    [Migration("20170311123608_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,7 +17,7 @@ namespace AprilisJam.Migrations
                 .HasAnnotation("ProductVersion", "1.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AprilisJam.Data.UserApplication", b =>
+            modelBuilder.Entity("AprilisJam.Data.RegistrationForm", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
@@ -26,21 +26,26 @@ namespace AprilisJam.Migrations
 
                     b.Property<string>("AprilisQuestion");
 
-                    b.Property<string>("City");
+                    b.Property<string>("City")
+                        .IsRequired();
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.Property<string>("Phone");
+                    b.Property<string>("Phone")
+                        .IsRequired();
 
                     b.Property<string>("School");
 
-                    b.Property<string>("Surname");
+                    b.Property<string>("Surname")
+                        .IsRequired();
 
                     b.HasKey("ID");
 
-                    b.ToTable("UserApplications");
+                    b.ToTable("RegistrationForms");
                 });
         }
     }

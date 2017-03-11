@@ -7,17 +7,16 @@ using AprilisJam.Data;
 
 namespace AprilisJam.Migrations
 {
-    [DbContext(typeof(GameJamContext))]
-    [Migration("20170310202916_4")]
-    partial class _4
+    [DbContext(typeof(AprilisJamRegistrationContext))]
+    partial class AprilisJamRegistrationContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AprilisJam.Data.UserApplication", b =>
+            modelBuilder.Entity("AprilisJam.Data.RegistrationForm", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
@@ -45,7 +44,7 @@ namespace AprilisJam.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("UserApplications");
+                    b.ToTable("RegistrationForms");
                 });
         }
     }
