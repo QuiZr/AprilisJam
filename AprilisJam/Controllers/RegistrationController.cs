@@ -20,7 +20,7 @@ namespace AprilisJam.Controllers
             return View();
         }
 
-        public IActionResult Succeed()
+        public IActionResult Succeeded()
         {
             return View();
         }
@@ -32,32 +32,16 @@ namespace AprilisJam.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Surname,Email,Phone,City,School,AprilisQuestion,AdditionalNotes")] RegistrationForm userApplication)
+        public async Task<IActionResult> Create([Bind("Name,Surname,Email,Phone,City,School,AprilisQuestion,AdditionalNotes")] RegistrationForm registrationForm)
         {
             if (ModelState.IsValid)
             {
-                int memberCount = await _context.RegistrationForms.CountAsync();
-
-                string emailContent = "";
-                if (memberCount > 30)
-                    emailContent = "Na chwilê obecn¹ mamy komplet ludzi. Je¿eli zwolni siê jakieœ miejsce zostanieœ o tym poinformowany :)";
-                else
-                    emailContent = "Widzimy siê na miejscu!";
-
-                await Services.EmailSender.SendEmailAsync(
-                    userApplication.Name,
-                    userApplication.Surname,
-                    userApplication.Email,
-                    "Aprilis Jam - Rejestracja",
-                    emailContent);
-
-                _context.Add(userApplication);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction("Succeed");
+                bool result = await registrationForm.RegisterUserWithEmailConfirmation(_context);
+                if (result)
+                    return RedirectToAction("Succeeded");
             }
 
-            return View(userApplication);
+            return View(registrationForm);
         }
     }
 }
