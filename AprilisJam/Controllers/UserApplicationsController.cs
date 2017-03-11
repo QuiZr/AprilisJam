@@ -14,7 +14,6 @@ namespace AprilisJam.Controllers
             _context = context;
         }
 
-        [Route("")]
         public IActionResult Index()
         {
             return View();
@@ -22,7 +21,6 @@ namespace AprilisJam.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("")]
         public async Task<IActionResult> Create([Bind("Name,Surname,Email,Phone,City,School,AprilisQuestion,AdditionalNotes")] UserApplication userApplication)
         {
             if (ModelState.IsValid)
