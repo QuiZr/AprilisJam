@@ -18,7 +18,6 @@ namespace AprilisJam.Controllers
             _appSettings = appSettings.Value;
         }
 
-        [Route("AdminOverwiev")]
         public async Task<IActionResult> Index(string pw)
         {
             if (pw == _appSettings.Password)
@@ -34,7 +33,6 @@ namespace AprilisJam.Controllers
             return RedirectToAction("Create");
         }
 
-        [Route("AdminDetails/{id?}")]
         public async Task<IActionResult> Details(int? id)
         {
             if (Request.Cookies["pw"] != _appSettings.Password)
@@ -57,7 +55,6 @@ namespace AprilisJam.Controllers
             return View(userApplication);
         }
 
-        [Route("AdminEdit/{id?}")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (Request.Cookies["pw"] != _appSettings.Password)
@@ -80,7 +77,6 @@ namespace AprilisJam.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("AdminEdit/{id?}")]
         public async Task<IActionResult> Edit(int id, [Bind("ID, Name,Surname,Email,Phone,City,School,AprilisQuestion,AdditionalNotes")] UserApplication userApplication)
         {
             if (Request.Cookies["pw"] != _appSettings.Password)
@@ -116,7 +112,6 @@ namespace AprilisJam.Controllers
             return View(userApplication);
         }
 
-        [Route("AdminDelete/{id?}")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (Request.Cookies["pw"] != _appSettings.Password)
@@ -141,7 +136,6 @@ namespace AprilisJam.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Route("AdminDelete/{id?}")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (Request.Cookies["pw"] != _appSettings.Password)

@@ -15,7 +15,7 @@ namespace AprilisJam.Controllers
         }
 
         [Route("")]
-        public IActionResult Create()
+        public IActionResult Index()
         {
             return View();
         }
@@ -47,7 +47,7 @@ namespace AprilisJam.Controllers
                     userApplication.Name,
                     userApplication.Surname,
                     userApplication.Email,
-                    "Aprilis Jam",
+                    "Aprilis Jam - Rejestracja",
                     message);
 
                 return RedirectToAction("RegistrationCompleted");

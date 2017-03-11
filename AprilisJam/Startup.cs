@@ -56,13 +56,13 @@ namespace AprilisJam
 
             app.UseStaticFiles();
 
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //        name: "default",
-            //        template: "{controller=UserApplications}/{action=Create}/{id?}");
-            //});
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=UserApplications}/{action=Index}/{id?}");
+            });
+
             if (env.IsProduction())
             {
                 context.Database.Migrate();
