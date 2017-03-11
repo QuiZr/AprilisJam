@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AprilisJam.Data
 {
-    public class GameJamContext : DbContext
+    public class AprilisJamRegistrationContext : DbContext
     {
-        public GameJamContext(DbContextOptions<GameJamContext> options) : base(options) { }
+        public AprilisJamRegistrationContext(DbContextOptions<AprilisJamRegistrationContext> options) : base(options) { }
 
-        public DbSet<UserApplication> UserApplications { get; set; }
+        public DbSet<RegistrationForm> RegistrationForms { get; set; }
     }
 }
 

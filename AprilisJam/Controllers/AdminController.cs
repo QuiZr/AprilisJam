@@ -9,10 +9,10 @@ namespace AprilisJam.Controllers
 {
     public class AdminController : Controller
     {
-        private GameJamContext _context { get; }
+        private AprilisJamRegistrationContext _context { get; }
         private AppSettings _appSettings { get; }
 
-        public AdminController(GameJamContext context, IOptions<AppSettings> appSettings)
+        public AdminController(AprilisJamRegistrationContext context, IOptions<AppSettings> appSettings)
         {
             _context = context;
             _appSettings = appSettings.Value;
@@ -23,11 +23,11 @@ namespace AprilisJam.Controllers
             if (pw == _appSettings.Password)
             {
                 Response.Cookies.Append("pw", pw);
-                return View(await _context.UserApplications.ToListAsync());
+                return View(await _context.RegistrationForms.ToListAsync());
             }
             if (Request.Cookies["pw"] == _appSettings.Password)
             {
-                return View(await _context.UserApplications.ToListAsync());
+                return View(await _context.RegistrationForms.ToListAsync());
             }
 
             return RedirectToAction("Create");
@@ -45,7 +45,7 @@ namespace AprilisJam.Controllers
                 return NotFound();
             }
 
-            var userApplication = await _context.UserApplications
+            var userApplication = await _context.RegistrationForms
                 .SingleOrDefaultAsync(m => m.ID == id);
             if (userApplication == null)
             {
@@ -67,7 +67,7 @@ namespace AprilisJam.Controllers
                 return NotFound();
             }
 
-            var userApplication = await _context.UserApplications.SingleOrDefaultAsync(m => m.ID == id);
+            var userApplication = await _context.RegistrationForms.SingleOrDefaultAsync(m => m.ID == id);
             if (userApplication == null)
             {
                 return NotFound();
@@ -77,7 +77,7 @@ namespace AprilisJam.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID, Name,Surname,Email,Phone,City,School,AprilisQuestion,AdditionalNotes")] UserApplication userApplication)
+        public async Task<IActionResult> Edit(int id, [Bind("ID, Name,Surname,Email,Phone,City,School,AprilisQuestion,AdditionalNotes")] RegistrationForm userApplication)
         {
             if (Request.Cookies["pw"] != _appSettings.Password)
             {
@@ -124,7 +124,7 @@ namespace AprilisJam.Controllers
                 return NotFound();
             }
 
-            var userApplication = await _context.UserApplications
+            var userApplication = await _context.RegistrationForms
                 .SingleOrDefaultAsync(m => m.ID == id);
             if (userApplication == null)
             {
@@ -143,15 +143,15 @@ namespace AprilisJam.Controllers
                 return RedirectToAction("Create");
             }
 
-            var userApplication = await _context.UserApplications.SingleOrDefaultAsync(m => m.ID == id);
-            _context.UserApplications.Remove(userApplication);
+            var userApplication = await _context.RegistrationForms.SingleOrDefaultAsync(m => m.ID == id);
+            _context.RegistrationForms.Remove(userApplication);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         private bool UserApplicationExists(int id)
         {
-            return _context.UserApplications.Any(e => e.ID == id);
+            return _context.RegistrationForms.Any(e => e.ID == id);
         }
     }
 }

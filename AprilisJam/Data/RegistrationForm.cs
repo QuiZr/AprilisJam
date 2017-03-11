@@ -2,7 +2,7 @@
 
 namespace AprilisJam.Data
 {
-    public class UserApplication
+    public class RegistrationForm
     {
         public int ID { get; set; }
         [Required(ErrorMessage = "Nie wypełniłeś pola koniecznego proszę stąd iść, albo się poprawić.")]

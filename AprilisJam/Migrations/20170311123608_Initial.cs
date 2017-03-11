@@ -10,30 +10,30 @@ namespace AprilisJam.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "UserApplications",
+                name: "RegistrationForms",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AdditionalNotes = table.Column<string>(nullable: true),
                     AprilisQuestion = table.Column<string>(nullable: true),
-                    City = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    Phone = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Phone = table.Column<string>(nullable: false),
                     School = table.Column<string>(nullable: true),
-                    Surname = table.Column<string>(nullable: true)
+                    Surname = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserApplications", x => x.ID);
+                    table.PrimaryKey("PK_RegistrationForms", x => x.ID);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "UserApplications");
+                name: "RegistrationForms");
         }
     }
 }

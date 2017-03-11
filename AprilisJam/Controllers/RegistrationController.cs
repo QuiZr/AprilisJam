@@ -7,9 +7,9 @@ namespace AprilisJam.Controllers
 {
     public class RegistrationController : Controller
     {
-        private GameJamContext _context { get; }
+        private AprilisJamRegistrationContext _context { get; }
 
-        public RegistrationController(GameJamContext context)
+        public RegistrationController(AprilisJamRegistrationContext context)
         {
             _context = context;
         }
@@ -31,11 +31,11 @@ namespace AprilisJam.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Surname,Email,Phone,City,School,AprilisQuestion,AdditionalNotes")] UserApplication userApplication)
+        public async Task<IActionResult> Create([Bind("Name,Surname,Email,Phone,City,School,AprilisQuestion,AdditionalNotes")] RegistrationForm userApplication)
         {
             if (ModelState.IsValid)
             {
-                int memberCount = await _context.UserApplications.CountAsync();
+                int memberCount = await _context.RegistrationForms.CountAsync();
 
                 string emailContent = "";
                 if (memberCount > 30)
