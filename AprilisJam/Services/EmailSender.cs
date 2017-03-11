@@ -21,6 +21,9 @@ namespace AprilisJam.Services
 
         public async Task SendEmailAsync(string name, string surname, string email, string subject, string message)
         {
+            if (!_emailSettings.IsSendingEnabled)
+                return;
+
             var emailMessage = new MimeMessage();
 
             emailMessage.From.Add(new MailboxAddress(_emailSettings.Name, _emailSettings.Email));
