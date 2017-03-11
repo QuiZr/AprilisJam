@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AprilisJam.Data
+namespace AprilisJam.Models
 {
     public class RegistrationForm
     {

@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AprilisJam.Data;
+using AprilisJam.Models;
 
 namespace AprilisJam.Controllers
 {

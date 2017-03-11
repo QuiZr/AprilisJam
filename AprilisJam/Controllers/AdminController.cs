@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using AprilisJam.Data;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
+using AprilisJam.Models;
 
 namespace AprilisJam.Controllers
 {
