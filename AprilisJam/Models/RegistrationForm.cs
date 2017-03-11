@@ -1,4 +1,5 @@
 ﻿using AprilisJam.Data;
+using AprilisJam.Services;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -37,31 +38,6 @@ namespace AprilisJam.Models
 
         [Display(Name = "Czy masz jakieś dodatkowe uwagi? ")]
         public string AdditionalNotes { get; set; }
-
-        public RegistrationForm() { }
-
-        public async Task<bool> RegisterUserWithEmailConfirmation(AprilisJamRegistrationContext context)
-        {
-            int memberCount = await context.RegistrationForms.CountAsync();
-
-            string emailContent = "";
-            if (memberCount > 30)
-                emailContent = "Na chwilę obecną mamy komplet ludzi. Jeżeli zwolni się jakieś miejsce zostanieś o tym poinformowany :)";
-            else
-                emailContent = "Widzimy się na miejscu!";
-
-            await Services.EmailSender.SendEmailAsync(
-                this.Name,
-                this.Surname,
-                this.Email,
-                "Aprilis Jam - Rejestracja",
-                emailContent);
-
-            context.Add(this);
-            await context.SaveChangesAsync();
-
-            return true;
-        }
     }
 }
 

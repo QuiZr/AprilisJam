@@ -1,4 +1,5 @@
-﻿using MailKit.Net.Smtp;
+﻿using AprilisJam.Data;
+using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using System;
@@ -9,22 +10,28 @@ using System.Threading.Tasks;
 
 namespace AprilisJam.Services
 {
-    public static class EmailSender
+    public class EmailSender : IEmailSender
     {
-        public static async Task SendEmailAsync(string name, string surname, string email, string subject, string message)
+        private EmailSettings _emailSettings { get; }
+        public EmailSender(EmailSettings emailSettings)
+        {
+            _emailSettings = emailSettings;
+        }
+
+        public async Task SendEmailAsync(string name, string surname, string email, string subject, string message)
         {
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("", ""));
+            emailMessage.From.Add(new MailboxAddress(_emailSettings.Name, _emailSettings.Email));
             emailMessage.To.Add(new MailboxAddress($"{name} {surname}", email));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart("plain") { Text = message };
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync("", 6969, true).ConfigureAwait(false);
+                await client.ConnectAsync(_emailSettings.Address, _emailSettings.Port, true).ConfigureAwait(false);
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
-                await client.AuthenticateAsync("", "").ConfigureAwait(false);
+                await client.AuthenticateAsync(_emailSettings.Login, _emailSettings.Password).ConfigureAwait(false);
                 await client.SendAsync(emailMessage).ConfigureAwait(false);
                 await client.DisconnectAsync(true).ConfigureAwait(false);
             }

@@ -3,16 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AprilisJam.Data;
 using AprilisJam.Models;
+using AprilisJam.Services;
 
 namespace AprilisJam.Controllers
 {
     public class RegistrationController : Controller
     {
         private AprilisJamRegistrationContext _context { get; }
+        private IConfirmationEmailSender _confirmationEmailSender { get; }
 
-        public RegistrationController(AprilisJamRegistrationContext context)
+        public RegistrationController(AprilisJamRegistrationContext context, IConfirmationEmailSender confirmationEmailSender)
         {
             _context = context;
+            _confirmationEmailSender = confirmationEmailSender;
         }
 
         public IActionResult Index()
@@ -36,9 +39,8 @@ namespace AprilisJam.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool result = await registrationForm.RegisterUserWithEmailConfirmation(_context);
-                if (result)
-                    return RedirectToAction("Succeeded");
+                await _confirmationEmailSender.SendConfirmationEmailAsync(registrationForm);
+                return RedirectToAction("Succeeded");
             }
 
             return View(registrationForm);

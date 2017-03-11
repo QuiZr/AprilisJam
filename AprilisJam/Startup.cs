@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using AprilisJam.Data;
 using Microsoft.EntityFrameworkCore;
+using AprilisJam.Services;
 
 namespace AprilisJam
 {
@@ -36,6 +37,11 @@ namespace AprilisJam
             });
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.Configure<EmailContent>(Configuration.GetSection("EmailContent"));
+
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IConfirmationEmailSender, ConfirmationEmailSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
