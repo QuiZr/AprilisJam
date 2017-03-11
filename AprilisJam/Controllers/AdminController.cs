@@ -202,7 +202,7 @@ namespace AprilisJam.Controllers
                     sendEmail.Content
                    );
 
-                return Ok();
+                return Ok($"Email do {userApplication.Email} poszed³!");
             }
             return View();
         }

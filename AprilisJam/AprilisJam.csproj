@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <None Remove="Properties\PublishProfiles\AprilisJam20170310080806 - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\AprilisJamRegistration - FTP.pubxml" />
+    <None Remove="Properties\PublishProfiles\AprilisJamRegistration - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MailKit" Version="1.10.2" />
@@ -35,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Connected Services\" />
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 </Project>
