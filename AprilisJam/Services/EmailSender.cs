@@ -1,6 +1,7 @@
 ﻿using AprilisJam.Data;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,9 @@ namespace AprilisJam.Services
     public class EmailSender : IEmailSender
     {
         private EmailSettings _emailSettings { get; }
-        public EmailSender(EmailSettings emailSettings)
+        public EmailSender(IOptions<EmailSettings> emailSettings)
         {
-            _emailSettings = emailSettings;
+            _emailSettings = emailSettings.Value;
         }
 
         public async Task SendEmailAsync(string name, string surname, string email, string subject, string message)
