@@ -9,6 +9,10 @@
     <ApplicationInsightsResourceId>/subscriptions/54e305c9-76a7-4e26-a4f1-1b87e2ec88d2/resourcegroups/AprilisJamProd/providers/microsoft.insights/components/AprilisJam</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/54e305c9-76a7-4e26-a4f1-1b87e2ec88d2/resourceGroups/AprilisJamProd/providers/microsoft.insights/components/AprilisJam</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Properties\PublishProfiles\AprilisJam20170310080806 - Web Deploy.pubxml" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MailKit" Version="1.10.2" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.0.4" />
@@ -31,5 +35,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Connected Services\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 </Project>
