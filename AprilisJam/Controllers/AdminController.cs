@@ -26,20 +26,16 @@ namespace AprilisJam.Controllers
                 Response.Cookies.Append("pw", pw);
                 return View(await _context.RegistrationForms.ToListAsync());
             }
-            if (Request.Cookies["pw"] == _appSettings.Password)
-            {
-                return View(await _context.RegistrationForms.ToListAsync());
-            }
+            if (!IsAuthorized())
+                return RedirectToDefaultRoute();
 
-            return RedirectToAction("Create");
+            return View(await _context.RegistrationForms.ToListAsync());
         }
 
         public async Task<IActionResult> Details(int? id)
         {
-            if (Request.Cookies["pw"] != _appSettings.Password)
-            {
-                return RedirectToAction("Create");
-            }
+            if (!IsAuthorized())
+                return RedirectToDefaultRoute();
 
             if (id == null)
             {
@@ -58,10 +54,8 @@ namespace AprilisJam.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
-            if (Request.Cookies["pw"] != _appSettings.Password)
-            {
-                return RedirectToAction("Create");
-            }
+            if (!IsAuthorized())
+                return RedirectToDefaultRoute();
 
             if (id == null)
             {
@@ -80,10 +74,8 @@ namespace AprilisJam.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID, Name,Surname,Email,Phone,City,School,AprilisQuestion,AdditionalNotes")] RegistrationForm userApplication)
         {
-            if (Request.Cookies["pw"] != _appSettings.Password)
-            {
-                return RedirectToAction("Create");
-            }
+            if (!IsAuthorized())
+                return RedirectToDefaultRoute();
 
             if (id != userApplication.ID)
             {
@@ -115,10 +107,8 @@ namespace AprilisJam.Controllers
 
         public async Task<IActionResult> Delete(int? id)
         {
-            if (Request.Cookies["pw"] != _appSettings.Password)
-            {
-                return RedirectToAction("Create");
-            }
+            if (!IsAuthorized())
+                return RedirectToDefaultRoute();
 
             if (id == null)
             {
@@ -139,10 +129,8 @@ namespace AprilisJam.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (Request.Cookies["pw"] != _appSettings.Password)
-            {
-                return RedirectToAction("Create");
-            }
+            if (!IsAuthorized())
+                return RedirectToDefaultRoute();
 
             var userApplication = await _context.RegistrationForms.SingleOrDefaultAsync(m => m.ID == id);
             _context.RegistrationForms.Remove(userApplication);
@@ -153,6 +141,22 @@ namespace AprilisJam.Controllers
         private bool UserApplicationExists(int id)
         {
             return _context.RegistrationForms.Any(e => e.ID == id);
+        }
+
+        private bool IsAuthorized()
+        {
+            if (Request.Cookies["pw"] == _appSettings.Password)
+                return true;
+            return false;
+        }
+
+        private RedirectToRouteResult RedirectToDefaultRoute()
+        {
+            return RedirectToRoute(new
+            {
+                controller = "Registration",
+                action = "Index",
+            });
         }
     }
 }
