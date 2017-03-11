@@ -5,16 +5,26 @@ using AprilisJam.Data;
 
 namespace AprilisJam.Controllers
 {
-    public class UserApplicationsController : Controller
+    public class RegistrationController : Controller
     {
         private GameJamContext _context { get; }
 
-        public UserApplicationsController(GameJamContext context)
+        public RegistrationController(GameJamContext context)
         {
             _context = context;
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Succeed()
+        {
+            return View();
+        }
+
+        public IActionResult Failed()
         {
             return View();
         }
@@ -25,38 +35,28 @@ namespace AprilisJam.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(userApplication);
+                int memberCount = await _context.UserApplications.CountAsync();
 
-                await _context.SaveChangesAsync();
-
-                int number = await _context.UserApplications.CountAsync();
-
-                string message = "";
-                if (number > 30)
-                {
-                    message = "Na chwilê obecn¹ mamy komplet ludzi. Je¿eli zwolni siê jakieœ miejsce zostanieœ o tym poinformowany :)";
-                }
+                string emailContent = "";
+                if (memberCount > 30)
+                    emailContent = "Na chwilê obecn¹ mamy komplet ludzi. Je¿eli zwolni siê jakieœ miejsce zostanieœ o tym poinformowany :)";
                 else
-                {
-                    message = "Widzimy siê na miejscu!";
-                }
+                    emailContent = "Widzimy siê na miejscu!";
 
                 await Services.EmailSender.SendEmailAsync(
                     userApplication.Name,
                     userApplication.Surname,
                     userApplication.Email,
                     "Aprilis Jam - Rejestracja",
-                    message);
+                    emailContent);
 
-                return RedirectToAction("RegistrationCompleted");
+                _context.Add(userApplication);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Succeed");
             }
-            return View(userApplication);
-        }
 
-        [Route("RegistrationCompleted")]
-        public IActionResult RegistrationCompleted()
-        {
-            return View();
+            return View(userApplication);
         }
     }
 }

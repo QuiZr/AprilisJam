@@ -51,7 +51,7 @@ namespace AprilisJam
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Registration/Failed");
             }
 
             app.UseStaticFiles();
@@ -60,7 +60,7 @@ namespace AprilisJam
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=UserApplications}/{action=Index}/{id?}");
+                    template: "{controller=Registration}/{action=Index}/{id?}");
             });
 
             if (env.IsProduction())
