@@ -8,9 +8,10 @@ using AprilisJam.Data;
 namespace AprilisJam.Migrations
 {
     [DbContext(typeof(AprilisJamRegistrationContext))]
-    partial class AprilisJamRegistrationContextModelSnapshot : ModelSnapshot
+    [Migration("20170311191359_AddedRegistrationDate")]
+    partial class AddedRegistrationDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.3")

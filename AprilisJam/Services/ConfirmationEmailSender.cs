@@ -38,9 +38,6 @@ namespace AprilisJam.Services
                 registrationForm.Email,
                 _emailContent.Title,
                 emailContent);
-
-            _context.Add(registrationForm);
-            await _context.SaveChangesAsync();
         }
     }
 }

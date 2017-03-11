@@ -1,6 +1,7 @@
 ﻿using AprilisJam.Data;
 using AprilisJam.Services;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
@@ -39,6 +40,8 @@ namespace AprilisJam.Models
 
         [Display(Name = "Czy masz jakieś dodatkowe uwagi? ")]
         public string AdditionalNotes { get; set; }
+
+        public DateTime RegistrationDate { get; set; }
     }
 }
 
