@@ -50,6 +50,8 @@ namespace AprilisJam
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.UseStatusCodePages();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

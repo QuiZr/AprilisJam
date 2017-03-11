@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using AprilisJam.Models;
 using AprilisJam.ViewModels;
+using AprilisJam.Services;
 
 namespace AprilisJam.Controllers
 {
@@ -13,11 +14,13 @@ namespace AprilisJam.Controllers
     {
         private AprilisJamRegistrationContext _context { get; }
         private AppSettings _appSettings { get; }
+        private IEmailSender _emailSender;
 
-        public AdminController(AprilisJamRegistrationContext context, IOptions<AppSettings> appSettings)
+        public AdminController(AprilisJamRegistrationContext context, IOptions<AppSettings> appSettings, IEmailSender emailSender)
         {
             _context = context;
             _appSettings = appSettings.Value;
+            _emailSender = emailSender;
         }
 
         public async Task<IActionResult> Index()
@@ -155,6 +158,53 @@ namespace AprilisJam.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SendEmail(int? id)
+        {
+            if (!IsAuthorized())
+                return RedirectToLogin();
+
+            if (id == null)
+                return NotFound();
+
+            var userApplication = await _context
+                .RegistrationForms
+                .SingleOrDefaultAsync(m => m.ID == id);
+
+            if (userApplication == null)
+                return NotFound();
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendEmail(int id, [Bind("Title,Content")] SendEmail sendEmail)
+        {
+            if (!IsAuthorized())
+                return RedirectToLogin();
+
+            if (ModelState.IsValid)
+            {
+                var userApplication = await _context
+                    .RegistrationForms
+                    .SingleOrDefaultAsync(m => m.ID == id);
+
+                if (userApplication == null)
+                    return NotFound();
+
+                await _emailSender.SendEmailAsync(
+                    userApplication.Name,
+                    userApplication.Surname,
+                    userApplication.Email,
+                    sendEmail.Title,
+                    sendEmail.Content
+                   );
+
+                return Ok();
+            }
+            return View();
         }
 
         private bool UserApplicationExists(int id)

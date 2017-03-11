@@ -1,0 +1,33 @@
+﻿@model AprilisJam.ViewModels.SendEmail
+
+<form asp-action="SendEmail">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="col-md-2 control-label">Tytuł</label>
+            <div class="col-md-10">
+                <input asp-for="Title" type="text" style="width: 300px;" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Wiadomość</label>
+            <div class="col-md-10">
+                <textarea asp-for="Content" style="height: 500px; width: 300px;"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Wyślij" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
