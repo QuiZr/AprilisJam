@@ -9,12 +9,10 @@ namespace AprilisJam.Controllers
 {
     public class RegistrationController : Controller
     {
-        private AprilisJamRegistrationContext _context { get; }
         private IConfirmationEmailSender _confirmationEmailSender { get; }
 
-        public RegistrationController(AprilisJamRegistrationContext context, IConfirmationEmailSender confirmationEmailSender)
+        public RegistrationController(IConfirmationEmailSender confirmationEmailSender)
         {
-            _context = context;
             _confirmationEmailSender = confirmationEmailSender;
         }
 
