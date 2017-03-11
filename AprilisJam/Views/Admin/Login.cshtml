@@ -1,6 +1,11 @@
 @model AprilisJam.ViewModels.Login
 
+@{
+    ViewData["Title"] = "Login";
+}
+
 <form asp-action="Login">
+    <label>Has³o: </label>
     <input asp-for="Password" type="password"/>
     <input type="submit" value="Zaloguj" class="btn btn-default" />
 </form>

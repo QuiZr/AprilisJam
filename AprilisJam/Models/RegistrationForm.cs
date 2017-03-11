@@ -19,11 +19,12 @@ namespace AprilisJam.Models
         public string Surname { get; set; }
 
         [Required(ErrorMessage = "Nie wypełniłeś pola koniecznego proszę stąd iść, albo się poprawić.")]
-        [Display(Name = "Email*"), DataType(DataType.EmailAddress, ErrorMessage = "Jesteś pewien, że wiesz jak wygląda poprawny email?")]
+        [Display(Name = "Email*"), EmailAddress(ErrorMessage = "Jesteś pewien, że wiesz jak wygląda poprawny email?")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Nie wypełniłeś pola koniecznego proszę stąd iść, albo się poprawić.")]
-        [Display(Name = "Numer kontaktowy*"), DataType(DataType.PhoneNumber, ErrorMessage = "To nie jest poprawny numer telefonu.")]
+        [Display(Name = "Numer kontaktowy*"), DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}", ErrorMessage = "To nie jest poprawny numer telefonu.")]
         public string Phone { get; set; }
 
         [Required(ErrorMessage = "Nie wypełniłeś pola koniecznego proszę stąd iść, albo się poprawić.")]
