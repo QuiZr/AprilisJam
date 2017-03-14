@@ -1,4 +1,5 @@
 ﻿using AprilisJam.Data;
+using MailKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
@@ -33,8 +34,9 @@ namespace AprilisJam.Services
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync(_emailSettings.Address, _emailSettings.Port, true).ConfigureAwait(false);
+                await client.ConnectAsync(_emailSettings.Address, _emailSettings.Port, SecureSocketOptions.StartTls).ConfigureAwait(false);
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
+                client.AuthenticationMechanisms.Remove("PLAIN");
                 await client.AuthenticateAsync(_emailSettings.Login, _emailSettings.Password).ConfigureAwait(false);
                 await client.SendAsync(emailMessage).ConfigureAwait(false);
                 await client.DisconnectAsync(true).ConfigureAwait(false);
