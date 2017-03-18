@@ -54,6 +54,12 @@ namespace AprilisJam
 
             app.UseStatusCodePages();
 
+            app.Use(async (c, next) =>
+            {
+                c.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM http://dotnet.p.lodz.pl");
+                await next();
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
