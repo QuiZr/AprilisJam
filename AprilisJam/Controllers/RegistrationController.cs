@@ -59,7 +59,7 @@ namespace AprilisJam.Controllers
                 return RedirectToAction("Succeeded");
             }
 
-            return View(registrationForm);
+            return RedirectToAction("Index");
         }
     }
 }

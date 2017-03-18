@@ -32,7 +32,9 @@ namespace AprilisJam
         {
             // Add framework services.
             services.AddMvc();
-            services.AddDbContext<AprilisJamRegistrationContext>(options => {
+
+            services.AddDbContext<AprilisJamRegistrationContext>(options =>
+            {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 

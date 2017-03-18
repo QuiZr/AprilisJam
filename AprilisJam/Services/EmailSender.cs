@@ -30,13 +30,14 @@ namespace AprilisJam.Services
             emailMessage.From.Add(new MailboxAddress(_emailSettings.Name, _emailSettings.Email));
             emailMessage.To.Add(new MailboxAddress($"{name} {surname}", email));
             emailMessage.Subject = subject;
-            emailMessage.Body = new TextPart("plain") { Text = message };
+            emailMessage.Body = new TextPart("html") { Text = message };
 
             using (var client = new SmtpClient())
             {
                 await client.ConnectAsync(_emailSettings.Address, _emailSettings.Port, SecureSocketOptions.StartTls).ConfigureAwait(false);
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
                 client.AuthenticationMechanisms.Remove("PLAIN");
+                client.ServerCertificateValidationCallback = ((sender, certificate, chain, sslPolicyErrors) => true);
                 await client.AuthenticateAsync(_emailSettings.Login, _emailSettings.Password).ConfigureAwait(false);
                 await client.SendAsync(emailMessage).ConfigureAwait(false);
                 await client.DisconnectAsync(true).ConfigureAwait(false);
